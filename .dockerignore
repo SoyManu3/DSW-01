@@ -1,0 +1,23 @@
+# VCS
+.git/
+
+# Build outputs
+target/
+build/
+
+# IDE / local config
+.idea/
+.vscode/
+
+# Node leftovers (if any)
+node_modules/
+
+# Logs and env
+*.log
+.env
+.env.*
+coverage/
+
+# Docker files
+Dockerfile*
+.dockerignore
