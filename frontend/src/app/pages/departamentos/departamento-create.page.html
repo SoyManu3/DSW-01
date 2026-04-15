@@ -1,0 +1,17 @@
+<section class="shell">
+  <article class="card">
+    <h1>Nuevo departamento</h1>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" formControlName="nombre" maxlength="100" />
+
+      <div class="actions">
+        <button type="submit" [disabled]="loading()">Guardar</button>
+        <a routerLink="/departamentos">Cancelar</a>
+      </div>
+    </form>
+
+    <p class="status" *ngIf="message()">{{ message() }}</p>
+  </article>
+</section>

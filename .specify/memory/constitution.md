@@ -1,10 +1,10 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.0 → 1.1.0
+- Version change: 1.2.0 → 1.3.0
 - Modified principles:
-  - IV. Contrato de API y Documentación Swagger Siempre Disponible → IV. Contrato OpenAPI, Swagger y Estabilidad de Interfaces
+  - VII. Frontend Angular 22 LTS Obligatorio → VII. Frontend Angular 21 LTS Obligatorio
 - Added sections:
-  - VI. Versionado Obligatorio de API y Paginación Determinista
+  - Ninguna
 - Removed sections:
   - Ninguna
 - Templates requiring updates:
@@ -62,6 +62,10 @@ resultados paginados con tamaño fijo de 10 instancias por consulta. Rationale: 
 evolución controlada del contrato sin romper clientes y garantizar cargas de respuesta
 predecibles.
 
+### VII. Frontend Angular 21 LTS Obligatorio
+
+Todo desarrollo de interfaz visual del sistema (frontend) MUST implementarse usando Angular 21 LTS. No se permite el uso de frameworks alternativos para la capa visual principal ni versiones distintas de Angular en producción. El frontend debe integrarse con el backend mediante contratos OpenAPI documentados y mantener sincronía funcional y visual con los endpoints expuestos. Rationale: homogeneidad tecnológica, soporte LTS, experiencia de usuario consistente y reducción de deuda técnica en la capa visual.
+
 ## Restricciones Técnicas y de Seguridad
 
 - Build y ejecución MUST gestionarse con Maven o Gradle manteniendo compatibilidad con Java 17.
@@ -72,12 +76,15 @@ predecibles.
 - Los servicios MUST proveer manejo de errores consistente (códigos HTTP, payload de error y
   logging estructurado mínimo).
 
+- El frontend Angular 21 LTS debe gestionarse con Node.js LTS y Angular CLI, manteniendo compatibilidad con la versión especificada y asegurando build reproducible. La comunicación frontend-backend debe respetar los contratos OpenAPI definidos.
+
 ## Flujo de Desarrollo y Puertas de Calidad
 
 - Toda especificación de feature MUST declarar impacto en seguridad, contrato API y modelo de
   datos antes de implementación.
 - Toda especificación de feature MUST declarar versión de API en rutas y comportamiento de
   paginación para endpoints de consulta de colecciones.
+- Toda especificación de feature que incluya parte visual MUST declarar impacto y dependencias en el frontend Angular, así como la integración con los endpoints backend.
 - Todo plan MUST pasar Constitution Check antes de iniciar diseño detallado.
 - Toda tarea de implementación MUST mapearse a historias de usuario independientes y verificables.
 - Ningún cambio se considera listo si falla compilación, pruebas obligatorias o validación de
@@ -107,4 +114,4 @@ Revisión de cumplimiento:
 - En ejecución: verificar tareas de seguridad, base de datos, Docker, Swagger, versionado
   en rutas y paginación de consultas.
 
-**Version**: 1.1.0 | **Ratified**: 2026-02-25 | **Last Amended**: 2026-03-04
+**Version**: 1.3.0 | **Ratified**: 2026-02-25 | **Last Amended**: 2026-03-19

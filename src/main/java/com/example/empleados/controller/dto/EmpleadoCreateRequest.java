@@ -1,6 +1,9 @@
 package com.example.empleados.controller.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public class EmpleadoCreateRequest {
@@ -16,6 +19,19 @@ public class EmpleadoCreateRequest {
     @NotBlank
     @Size(max = 100)
     private String telefono;
+
+    @NotBlank
+    @Email
+    @Size(max = 320)
+    private String correo;
+
+    @NotBlank
+    @Size(min = 8, max = 255)
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d).{8,}$")
+    private String password;
+
+    @Positive
+    private Long departamentoId;
 
     public String getNombre() {
         return nombre;
@@ -39,5 +55,29 @@ public class EmpleadoCreateRequest {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Long getDepartamentoId() {
+        return departamentoId;
+    }
+
+    public void setDepartamentoId(Long departamentoId) {
+        this.departamentoId = departamentoId;
     }
 }

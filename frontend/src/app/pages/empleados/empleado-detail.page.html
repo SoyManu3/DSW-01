@@ -1,0 +1,32 @@
+<section class="shell">
+  <article class="card">
+    <h1>Detalle de empleado</h1>
+
+    <p class="status" *ngIf="message()">{{ message() }}</p>
+    <p *ngIf="loading()">Cargando...</p>
+
+    <dl *ngIf="!loading() && empleado() as item" class="detail-grid">
+      <dt>Clave</dt>
+      <dd>{{ item.clave }}</dd>
+
+      <dt>Nombre</dt>
+      <dd>{{ item.nombre }}</dd>
+
+      <dt>Correo</dt>
+      <dd>{{ item.correo }}</dd>
+
+      <dt>Dirección</dt>
+      <dd>{{ item.direccion }}</dd>
+
+      <dt>Teléfono</dt>
+      <dd>{{ item.telefono }}</dd>
+
+      <dt>Activo</dt>
+      <dd>{{ item.activo ? 'Sí' : 'No' }}</dd>
+    </dl>
+
+    <div class="actions">
+      <a routerLink="/empleados">Volver al listado</a>
+    </div>
+  </article>
+</section>

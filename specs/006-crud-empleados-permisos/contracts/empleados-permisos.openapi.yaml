@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: API Empleados - Permisos por Rol
+  version: 1.0.0
+  description: >-
+    Contrato inicial para documentar restricciones de autorización por rol en
+    operaciones CRUD de empleados consumidas por la UI.
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/v1/auth/login:
+    post:
+      summary: Login de usuario
+      responses:
+        "200":
+          description: Login exitoso con rol de sesión
+  /api/v1/empleados:
+    get:
+      summary: Listado paginado de empleados (10 por solicitud)
+      security:
+        - basicAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        "200":
+          description: Lista paginada
+    post:
+      summary: Crear empleado (solo ADMIN)
+      security:
+        - basicAuth: []
+      responses:
+        "201":
+          description: Creado
+        "401":
+          description: No autenticado
+        "403":
+          description: Permisos insuficientes
+  /api/v1/empleados/{clave}:
+    get:
+      summary: Obtener detalle de empleado por clave
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: clave
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Empleado encontrado
+    put:
+      summary: Actualizar empleado (solo ADMIN)
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: Actualizado
+        "401":
+          description: No autenticado
+        "403":
+          description: Permisos insuficientes
+    delete:
+      summary: Eliminar empleado (solo ADMIN)
+      security:
+        - basicAuth: []
+      responses:
+        "204":
+          description: Eliminado
+        "401":
+          description: No autenticado
+        "403":
+          description: Permisos insuficientes
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

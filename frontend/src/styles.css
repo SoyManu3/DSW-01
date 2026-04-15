@@ -1,0 +1,32 @@
+:root {
+  --surface-main: #0f172a;
+  --surface-elevated: #1e293b;
+  --surface-card: #111827;
+  --surface-input: #0b1220;
+  --border-color: #334155;
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  --focus-ring: #60a5fa;
+  --button-main: #0284c7;
+  --button-alt: #2563eb;
+  --button-text: #f8fafc;
+  --error-main: #f87171;
+  --shadow-md: 0 12px 24px rgb(2 6 23 / 40%);
+  --shadow-lg: 0 18px 32px rgb(2 6 23 / 45%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--surface-main);
+  color: var(--text-main);
+}

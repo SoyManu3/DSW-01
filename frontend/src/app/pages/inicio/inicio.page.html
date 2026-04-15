@@ -1,0 +1,13 @@
+<section class="inicio-shell">
+  <article class="inicio-card">
+    <h1>Inicio</h1>
+    <p>Acceso autenticado correctamente.</p>
+    <p class="role-badge">Rol actual: {{ role() ?? 'SIN ROL' }}</p>
+
+    <div class="actions">
+      <a routerLink="/empleados">Ir a gestión de empleados</a>
+      <a routerLink="/departamentos">Ir a gestión de departamentos</a>
+      <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </article>
+</section>

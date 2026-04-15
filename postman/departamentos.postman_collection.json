@@ -1,0 +1,59 @@
+{
+  "info": {
+    "name": "Departamentos API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Colección para validar CRUD de departamentos y empleados por departamento"
+  },
+  "item": [
+    {
+      "name": "Crear departamento",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Ventas\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/departamentos",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "departamentos"]
+        }
+      }
+    },
+    {
+      "name": "Listar departamentos",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/departamentos?page=0",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "departamentos"],
+          "query": [{ "key": "page", "value": "0" }]
+        }
+      }
+    },
+    {
+      "name": "Listar empleados por departamento",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/departamentos/{{departamentoId}}/empleados?page=0",
+          "host": ["{{baseUrl}}"],
+          "path": [
+            "api",
+            "v1",
+            "departamentos",
+            "{{departamentoId}}",
+            "empleados"
+          ],
+          "query": [{ "key": "page", "value": "0" }]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "departamentoId", "value": "1" }
+  ]
+}

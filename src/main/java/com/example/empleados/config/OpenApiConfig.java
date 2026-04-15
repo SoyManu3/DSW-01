@@ -17,9 +17,9 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("API CRUD Empleados")
-                        .version("1.0.0")
-                        .description("Contrato de API para operaciones CRUD de empleados."))
+                        .title("API Empleados con Autenticación por Correo")
+                        .version("1.2.0")
+                        .description("Contrato de API para gestión de empleados protegida con HTTP Basic Auth."))
                 .components(new Components()
                         .addSecuritySchemes(schemeName,
                                 new SecurityScheme()

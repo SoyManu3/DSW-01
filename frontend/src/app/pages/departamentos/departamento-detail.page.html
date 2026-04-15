@@ -1,0 +1,22 @@
+<section class="shell">
+  <article class="card">
+    <h1>Detalle de departamento</h1>
+
+    <div class="loading" *ngIf="loading()">Cargando detalle...</div>
+
+    <dl class="detail-grid" *ngIf="!loading() && departamento() as item">
+      <dt>ID</dt>
+      <dd>{{ item.id }}</dd>
+      <dt>Nombre</dt>
+      <dd>{{ item.nombre }}</dd>
+      <dt>Empleados asociados</dt>
+      <dd>{{ item.empleadosCount }}</dd>
+    </dl>
+
+    <div class="actions">
+      <a routerLink="/departamentos">Volver al listado</a>
+    </div>
+
+    <p class="status" *ngIf="message()">{{ message() }}</p>
+  </article>
+</section>

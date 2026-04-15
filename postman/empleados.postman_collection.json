@@ -1,9 +1,9 @@
 {
   "info": {
     "_postman_id": "f5d5ce5e-41c2-4f71-8dd6-bf8751ad1a11",
-    "name": "CRUD Empleados API",
+    "name": "Consultas Empleados API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Colección para probar CRUD de empleados con Basic Auth."
+    "description": "Colección para probar consultas paginadas de empleados con Basic Auth."
   },
   "item": [
     {
@@ -19,225 +19,95 @@
       }
     },
     {
-      "name": "Empleados",
-      "item": [
+      "name": "Listar empleados paginados",
+      "event": [
         {
-          "name": "01 - Crear empleado",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status 201', function () {",
-                  "  pm.response.to.have.status(201);",
-                  "});",
-                  "const json = pm.response.json();",
-                  "if (json && json.clave) {",
-                  "  pm.collectionVariables.set('clave', json.clave);",
-                  "}"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "basic",
-              "basic": [
-                {
-                  "key": "username",
-                  "value": "{{user}}",
-                  "type": "string"
-                },
-                {
-                  "key": "password",
-                  "value": "{{pass}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Ana Ruiz\",\n  \"direccion\": \"Av. Principal 123\",\n  \"telefono\": \"5557777\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/empleados",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "empleados"]
-            }
-          }
-        },
-        {
-          "name": "02 - Listar empleados",
-          "request": {
-            "auth": {
-              "type": "basic",
-              "basic": [
-                {
-                  "key": "username",
-                  "value": "{{user}}",
-                  "type": "string"
-                },
-                {
-                  "key": "password",
-                  "value": "{{pass}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/empleados?page=0",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "empleados"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "0"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "03 - Obtener por clave",
-          "request": {
-            "auth": {
-              "type": "basic",
-              "basic": [
-                {
-                  "key": "username",
-                  "value": "{{user}}",
-                  "type": "string"
-                },
-                {
-                  "key": "password",
-                  "value": "{{pass}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/empleados/{{clave}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "empleados", "{{clave}}"]
-            }
-          }
-        },
-        {
-          "name": "04 - Actualizar empleado",
-          "request": {
-            "auth": {
-              "type": "basic",
-              "basic": [
-                {
-                  "key": "username",
-                  "value": "{{user}}",
-                  "type": "string"
-                },
-                {
-                  "key": "password",
-                  "value": "{{pass}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Ana Ruiz Mod\",\n  \"direccion\": \"Av. Principal 999\",\n  \"telefono\": \"5550000\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/empleados/{{clave}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "empleados", "{{clave}}"]
-            }
-          }
-        },
-        {
-          "name": "05 - Eliminar empleado",
-          "request": {
-            "auth": {
-              "type": "basic",
-              "basic": [
-                {
-                  "key": "username",
-                  "value": "{{user}}",
-                  "type": "string"
-                },
-                {
-                  "key": "password",
-                  "value": "{{pass}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/empleados/{{clave}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "empleados", "{{clave}}"]
-            }
-          }
-        },
-        {
-          "name": "06 - Obtener eliminado (espera 404)",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status 404', function () {",
-                  "  pm.response.to.have.status(404);",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "basic",
-              "basic": [
-                {
-                  "key": "username",
-                  "value": "{{user}}",
-                  "type": "string"
-                },
-                {
-                  "key": "password",
-                  "value": "{{pass}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/empleados/{{clave}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "empleados", "{{clave}}"]
-            }
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.test('Tiene campos de paginación', function () {",
+              "  pm.expect(json).to.have.property('content');",
+              "  pm.expect(json).to.have.property('page');",
+              "  pm.expect(json).to.have.property('size');",
+              "  pm.expect(json).to.have.property('totalElements');",
+              "  pm.expect(json).to.have.property('totalPages');",
+              "});",
+              "pm.test('size es 10', function () {",
+              "  pm.expect(json.size).to.eql(10);",
+              "});",
+              "pm.test('content máximo 10', function () {",
+              "  pm.expect(json.content.length).to.be.at.most(10);",
+              "});"
+            ]
           }
         }
-      ]
+      ],
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "{{user}}",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "{{pass}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/empleados?page=0",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "empleados"],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Listar empleados sin credenciales (espera 401)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/empleados?page=0",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "empleados"],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            }
+          ]
+        }
+      }
     }
   ],
   "variable": [
@@ -252,10 +122,6 @@
     {
       "key": "pass",
       "value": "admin123"
-    },
-    {
-      "key": "clave",
-      "value": "EMP-1"
     }
   ]
 }

@@ -1,0 +1,72 @@
+.shell {
+  min-height: 100dvh;
+  background: var(--surface-main);
+  padding: 1.5rem;
+}
+
+.card {
+  margin: 0 auto;
+  width: min(1080px, 100%);
+  border: 1px solid var(--border-color);
+  background: var(--surface-card);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: var(--shadow-md);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th,
+td {
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.6rem 0.4rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pager {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status {
+  margin-top: 0.75rem;
+}
+
+button,
+a {
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  padding: 0.45rem 0.7rem;
+  background: var(--surface-main);
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

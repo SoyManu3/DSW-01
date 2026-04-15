@@ -1,0 +1,341 @@
+openapi: 3.0.3
+info:
+  title: API Departamentos y Relación con Empleados
+  version: 1.0.1
+  description: >-
+    Contrato OpenAPI para CRUD de departamentos y consulta paginada de empleados
+    asociados, protegido con HTTP Basic Auth.
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/v1/departamentos:
+    get:
+      summary: Listar departamentos
+      security:
+        - basicAuth: []
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        "200":
+          description: Lista paginada de departamentos (10 por consulta, orden por id asc)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedDepartamentosResponse"
+        "401":
+          description: No autenticado
+    post:
+      summary: Crear departamento
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DepartamentoCreateRequest"
+      responses:
+        "201":
+          description: Departamento creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DepartamentoResponse"
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "401":
+          description: No autenticado
+        "409":
+          description: Nombre de departamento duplicado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /api/v1/departamentos/{id}:
+    get:
+      summary: Obtener departamento por id
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: Departamento encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DepartamentoResponse"
+        "401":
+          description: No autenticado
+        "404":
+          description: Departamento no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+    put:
+      summary: Actualizar departamento
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DepartamentoUpdateRequest"
+      responses:
+        "200":
+          description: Departamento actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DepartamentoResponse"
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "401":
+          description: No autenticado
+        "404":
+          description: Departamento no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "409":
+          description: Nombre de departamento duplicado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+    delete:
+      summary: Eliminar departamento por id
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "204":
+          description: Departamento eliminado
+        "401":
+          description: No autenticado
+        "404":
+          description: Departamento no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "409":
+          description: Departamento con empleados asociados (no eliminable)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /api/v1/departamentos/{id}/empleados:
+    get:
+      summary: Listar empleados de un departamento
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        "200":
+          description: Lista paginada de empleados del departamento (10 por consulta, orden por id asc)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedEmpleadosDepartamentoResponse"
+        "401":
+          description: No autenticado
+        "404":
+          description: Departamento no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    DepartamentoCreateRequest:
+      type: object
+      required:
+        - nombre
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: "^(?=.*\\S).{1,100}$"
+          description: Nombre único sensible a mayúsculas/minúsculas.
+
+    DepartamentoUpdateRequest:
+      type: object
+      required:
+        - nombre
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: "^(?=.*\\S).{1,100}$"
+          description: Nombre único sensible a mayúsculas/minúsculas.
+
+    DepartamentoResponse:
+      type: object
+      required:
+        - id
+        - nombre
+        - empleadosCount
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        nombre:
+          type: string
+          maxLength: 100
+        empleadosCount:
+          type: integer
+          minimum: 0
+
+    PaginatedDepartamentosResponse:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          maxItems: 10
+          items:
+            $ref: "#/components/schemas/DepartamentoResponse"
+        page:
+          type: integer
+          minimum: 0
+        size:
+          type: integer
+          enum: [10]
+        totalElements:
+          type: integer
+          minimum: 0
+        totalPages:
+          type: integer
+          minimum: 0
+
+    EmpleadoDepartamentoResponse:
+      type: object
+      required:
+        - clave
+        - nombre
+        - correo
+        - departamentoId
+      properties:
+        clave:
+          type: string
+          pattern: "^EMP-[1-9][0-9]*$"
+        nombre:
+          type: string
+          maxLength: 100
+        correo:
+          type: string
+          format: email
+          maxLength: 320
+        departamentoId:
+          type: integer
+          minimum: 1
+
+    PaginatedEmpleadosDepartamentoResponse:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          maxItems: 10
+          items:
+            $ref: "#/components/schemas/EmpleadoDepartamentoResponse"
+        page:
+          type: integer
+          minimum: 0
+        size:
+          type: integer
+          enum: [10]
+        totalElements:
+          type: integer
+          minimum: 0
+        totalPages:
+          type: integer
+          minimum: 0
+
+    ApiError:
+      type: object
+      required:
+        - timestamp
+        - status
+        - error
+        - path
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string

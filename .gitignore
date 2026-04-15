@@ -25,3 +25,11 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Node / Angular
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+.angular/
+coverage/

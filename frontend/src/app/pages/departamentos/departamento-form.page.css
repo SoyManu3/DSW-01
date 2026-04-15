@@ -1,0 +1,59 @@
+.shell {
+  min-height: 100dvh;
+  background: var(--surface-main);
+  padding: 1.5rem;
+}
+
+.card {
+  width: min(640px, 100%);
+  margin: 0 auto;
+  border: 1px solid var(--border-color);
+  background: var(--surface-card);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  padding: 1rem;
+}
+
+form {
+  display: grid;
+  gap: 0.45rem;
+}
+
+input {
+  border: 1px solid var(--border-color);
+  background: var(--surface-main);
+  color: var(--text-main);
+  border-radius: 10px;
+  padding: 0.55rem;
+}
+
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.6rem;
+}
+
+button,
+a {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.5rem 0.8rem;
+  background: var(--surface-main);
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 0.4rem 0.8rem;
+}
+
+dt {
+  font-weight: 700;
+}

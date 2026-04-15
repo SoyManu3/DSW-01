@@ -1,0 +1,70 @@
+<section class="shell">
+  <article class="card">
+    <header class="header">
+      <div>
+        <h1>Gestión de empleados</h1>
+        <p>
+          Rol activo: <strong>{{ rol() ?? 'SIN ROL' }}</strong>
+        </p>
+      </div>
+      <div class="header-actions">
+        <button type="button" (click)="irANuevo()" [disabled]="!permissions().puedeCrear">
+          Nuevo empleado
+        </button>
+        <a routerLink="/inicio">Volver a inicio</a>
+        <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <p class="status" *ngIf="message()">{{ message() }}</p>
+
+    <div class="loading" *ngIf="loading()">Cargando empleados...</div>
+
+    <table *ngIf="!loading() && rows().length">
+      <thead>
+        <tr>
+          <th>Clave</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of rows()">
+          <td>{{ item.clave }}</td>
+          <td>{{ item.nombre }}</td>
+          <td>{{ item.correo }}</td>
+          <td>{{ item.telefono }}</td>
+          <td class="actions">
+            <a [routerLink]="['/empleados', item.clave]">Detalle</a>
+            <button
+              type="button"
+              (click)="irAEditar(item.clave)"
+              [disabled]="!permissions().puedeEditar"
+            >
+              Editar
+            </button>
+            <button
+              type="button"
+              (click)="eliminar(item)"
+              [disabled]="!permissions().puedeEliminar"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <footer class="pager" *ngIf="!loading()">
+      <button type="button" (click)="anterior()" [disabled]="page() <= 0">Anterior</button>
+      <span
+        >Página {{ page() + 1 }} de {{ totalPages() || 1 }} · {{ totalElements() }} empleados</span
+      >
+      <button type="button" (click)="siguiente()" [disabled]="page() >= totalPages() - 1">
+        Siguiente
+      </button>
+    </footer>
+  </article>
+</section>

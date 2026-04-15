@@ -6,15 +6,19 @@ public class EmpleadoResponse {
     private String nombre;
     private String direccion;
     private String telefono;
+    private String correo;
+    private boolean activo;
 
     public EmpleadoResponse() {
     }
 
-    public EmpleadoResponse(String clave, String nombre, String direccion, String telefono) {
+    public EmpleadoResponse(String clave, String nombre, String direccion, String telefono, String correo, boolean activo) {
         this.clave = clave;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
+        this.correo = correo;
+        this.activo = activo;
     }
 
     public String getClave() {
@@ -47,5 +51,21 @@ public class EmpleadoResponse {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }

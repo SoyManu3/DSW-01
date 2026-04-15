@@ -1,0 +1,57 @@
+<section class="login-shell" aria-labelledby="titulo-login">
+  <div class="login-card">
+    <h1 id="titulo-login">Ingreso de empleados</h1>
+    <p class="subtitle">Accede con tu correo corporativo y contraseña.</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label for="emailCorporativo">Correo corporativo</label>
+      <input
+        id="emailCorporativo"
+        type="email"
+        formControlName="emailCorporativo"
+        autocomplete="username"
+        [attr.aria-invalid]="
+          form.controls.emailCorporativo.invalid && form.controls.emailCorporativo.touched
+        "
+      />
+      @if (
+        form.controls.emailCorporativo.touched &&
+        form.controls.emailCorporativo.hasError('required')
+      ) {
+        <p class="field-error">El correo corporativo es obligatorio.</p>
+      }
+      @if (
+        form.controls.emailCorporativo.touched && form.controls.emailCorporativo.hasError('email')
+      ) {
+        <p class="field-error">Ingresa un correo con formato válido.</p>
+      }
+
+      <label for="contrasena">Contraseña</label>
+      <input
+        id="contrasena"
+        type="password"
+        formControlName="contrasena"
+        autocomplete="current-password"
+        [attr.aria-invalid]="form.controls.contrasena.invalid && form.controls.contrasena.touched"
+      />
+      @if (form.controls.contrasena.touched && form.controls.contrasena.hasError('required')) {
+        <p class="field-error">La contraseña es obligatoria.</p>
+      }
+
+      <button type="submit" [disabled]="enviando()">
+        @if (enviando()) {
+          <span>Validando...</span>
+        } @else {
+          <span>Iniciar sesión</span>
+        }
+      </button>
+    </form>
+
+    <p
+      class="status"
+      [class.status-error]="estado() === 'RECHAZADO' || estado() === 'ERROR_TECNICO'"
+    >
+      {{ mensaje() }}
+    </p>
+  </div>
+</section>
