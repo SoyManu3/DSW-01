@@ -2,6 +2,8 @@ name: CI - Tests Backend y Frontend
 
 on:
   push:
+    branches:
+      - "develop"
     paths:
       - "pom.xml"
       - "src/**"
