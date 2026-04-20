@@ -1,9 +1,12 @@
 name: CI - Tests Backend y Frontend
 
 on:
+  push:
+    paths:
+      - "pom.xml"
+      - "src/**"
+      - "frontend/**"
   pull_request:
-    branches:
-      - "release"
     paths:
       - "pom.xml"
       - "src/**"
@@ -16,7 +19,6 @@ jobs:
   changes:
     name: Detectar cambios
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.ref == 'develop'
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
       frontend: ${{ steps.filter.outputs.frontend }}
