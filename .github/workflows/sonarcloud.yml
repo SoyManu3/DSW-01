@@ -1,14 +1,14 @@
 name: 02-SonarCloud
 
 env:
-  SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION || github.repository_owner }}
+  SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
 
 on:
   pull_request:
     branches:
       - "master"
       - "release"
-    types: [opened, synchronize, reopened, ready_for_review]
+    types: [opened, reopened, ready_for_review]
     paths:
       - "frontend/**"
       - "src/**"
@@ -54,7 +54,7 @@ jobs:
         run: mvn -B -Dorg.slf4j.simpleLogger.defaultLogLevel=warn "-Dtest=com.example.empleados.unit.*Test" test
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v5
+        uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io
