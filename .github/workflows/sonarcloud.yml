@@ -1,5 +1,8 @@
 name: SonarCloud Analysis
 
+env:
+  SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION || github.repository_owner }}
+
 on:
   pull_request:
     branches:
@@ -48,7 +51,7 @@ jobs:
         run: |
           mvn -B \
             -Dsonar.projectKey=dsw2-practica01-backend \
-            -Dsonar.organization=tu-organizacion \
+            -Dsonar.organization=${SONAR_ORGANIZATION} \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.qualitygate.wait=true \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
@@ -96,7 +99,7 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=dsw2-practica01-frontend
-            -Dsonar.organization=tu-organizacion
+            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
             -Dsonar.sources=src
             -Dsonar.exclusions=**/node_modules/**,**/*.spec.ts
             -Dsonar.tests=src
