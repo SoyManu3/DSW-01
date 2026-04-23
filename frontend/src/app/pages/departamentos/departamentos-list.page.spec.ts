@@ -4,6 +4,7 @@ import { signal } from '@angular/core';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 import { AuthService } from '../../services/auth/auth.service';
+import { PaginatedDepartamentosResponse } from '../../services/departamentos/departamentos.models';
 import { DepartamentosService } from '../../services/departamentos/departamentos.service';
 import { DepartamentosListPage } from './departamentos-list.page';
 
@@ -19,7 +20,7 @@ describe('DepartamentosListPage', () => {
 
   const departamentosServiceMock = {
     listar: vi.fn(() =>
-      of({
+      of<PaginatedDepartamentosResponse>({
         content: [],
         page: 0,
         size: 10,
@@ -63,7 +64,7 @@ describe('DepartamentosListPage', () => {
 
   it('muestra mensaje de permisos cuando llega con denied=1', () => {
     departamentosServiceMock.listar.mockReturnValueOnce(
-      of({
+      of<PaginatedDepartamentosResponse>({
         content: [{ id: 1, nombre: 'General', empleadosCount: 0 }],
         page: 0,
         size: 10,
