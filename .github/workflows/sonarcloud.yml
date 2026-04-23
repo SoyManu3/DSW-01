@@ -1,5 +1,8 @@
 name: 02-SonarCloud
 
+env:
+  SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION != '' && vars.SONAR_ORGANIZATION || secrets.SONAR_ORGANIZATION }}
+
 on:
   pull_request:
     branches:
@@ -28,8 +31,8 @@ jobs:
 
       - name: Validate SonarCloud organization
         run: |
-          if [ -z "${{ vars.SONAR_ORGANIZATION }}" ]; then
-            echo "Missing repository variable SONAR_ORGANIZATION"
+          if [ -z "${SONAR_ORGANIZATION}" ]; then
+            echo "Missing SONAR_ORGANIZATION (configure it as Repository Variable or Secret)"
             exit 1
           fi
 
@@ -60,7 +63,7 @@ jobs:
           projectBaseDir: .
           args: >
             -Dsonar.projectKey=dsw2-practica01
-            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
             -Dsonar.sources=src/main/java,frontend/src
             -Dsonar.tests=src/test/java,frontend/src
             -Dsonar.test.inclusions=**/*Test.java,**/*.spec.ts,**/*.test.ts
