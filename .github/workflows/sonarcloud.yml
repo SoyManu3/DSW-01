@@ -13,16 +13,6 @@ on:
       - "pom.xml"
       - ".github/workflows/sonarcloud.yml"
       - "sonar-project.properties"
-  push:
-    branches:
-      - "develop"
-      - "master"
-    paths:
-      - "frontend/**"
-      - "src/**"
-      - "pom.xml"
-      - ".github/workflows/sonarcloud.yml"
-      - "sonar-project.properties"
 
 jobs:
   sonarcloud-backend:
