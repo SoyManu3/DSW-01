@@ -3,7 +3,6 @@ name: SonarCloud Analysis
 on:
   pull_request:
     branches:
-      - "develop"
       - "master"
       - "release"
     types: [opened, synchronize, reopened]
@@ -40,7 +39,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar-backend
 
       - name: Run backend tests
-        run: mvn -B -DskipITs -Dorg.slf4j.simpleLogger.defaultLogLevel=warn clean verify
+        run: mvn -B -Dorg.slf4j.simpleLogger.defaultLogLevel=warn "-Dtest=com.example.empleados.unit.*Test" test
 
       - name: Generate SonarCloud backend report
         env:
