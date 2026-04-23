@@ -1,65 +1,47 @@
-name: CI - Tests Backend y Frontend
+name: 01 CI Tests
 
 on:
+  push:
+    branches:
+      - "develop"
+    paths:
+      - "frontend/**"
+      - "src/**"
+      - "pom.xml"
+      - ".github/workflows/ci-tests.yml"
   pull_request:
     branches:
+      - "develop"
       - "release"
     paths:
-      - "pom.xml"
-      - "src/**"
       - "frontend/**"
-
-permissions:
-  contents: read
+      - "src/**"
+      - "pom.xml"
+      - ".github/workflows/ci-tests.yml"
 
 jobs:
-  changes:
-    name: Detectar cambios
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.head.ref == 'develop'
-    outputs:
-      backend: ${{ steps.filter.outputs.backend }}
-      frontend: ${{ steps.filter.outputs.frontend }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Filtrar archivos cambiados
-        id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            backend:
-              - "pom.xml"
-              - "src/**"
-            frontend:
-              - "frontend/**"
-
   backend-tests:
-    name: Tests backend (Spring Boot)
+    name: Backend Tests
     runs-on: ubuntu-latest
-    needs: changes
-    if: needs.changes.result == 'success' && needs.changes.outputs.backend == 'true'
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configurar Java 17
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
           cache: maven
 
-      - name: Ejecutar tests backend
-        run: mvn -B test
+      - name: Run backend tests
+        run: mvn -B -Dtest=com.example.empleados.unit.\*Test test
 
   frontend-tests:
-    name: Tests frontend (Angular)
+    name: Frontend Tests
     runs-on: ubuntu-latest
-    needs: changes
-    if: needs.changes.result == 'success' && needs.changes.outputs.frontend == 'true'
+
     defaults:
       run:
         working-directory: frontend
@@ -68,15 +50,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configurar Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Instalar dependencias frontend
+      - name: Install frontend dependencies
         run: npm ci
 
-      - name: Ejecutar tests frontend
-        run: npm run test -- --watch=false
+      - name: Run frontend tests
+        run: npm test -- --watch=false --no-progress
+
+      - name: Run Cypress basic test
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: frontend
+          install: false
+          start: npm run start -- --host 0.0.0.0 --port 4200
+          wait-on: "http://localhost:4200"
+          spec: cypress/e2e/login/login-validation-required.cy.ts

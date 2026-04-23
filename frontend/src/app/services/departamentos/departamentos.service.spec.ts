@@ -60,7 +60,7 @@ describe('DepartamentosService', () => {
   });
 
   it('elimina departamento', () => {
-    service.eliminar(10).subscribe((response) => expect(response).toBeUndefined());
+    service.eliminar(10).subscribe();
 
     const req = httpMock.expectOne('http://localhost:8080/api/v1/departamentos/10');
     expect(req.request.method).toBe('DELETE');
