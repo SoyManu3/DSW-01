@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - "develop"
-    paths:
-      - "frontend/**"
-      - "src/**"
-      - "pom.xml"
-      - ".github/workflows/ci-tests.yml"
   pull_request:
     branches:
       - "develop"
