@@ -1,0 +1,98 @@
+name: SonarCloud Analysis
+
+on:
+  pull_request:
+    branches:
+      - "develop"
+      - "master"
+      - "release"
+    paths:
+      - "frontend/**"
+      - "src/**"
+      - "pom.xml"
+      - ".github/workflows/sonarcloud.yml"
+  push:
+    branches:
+      - "develop"
+      - "master"
+    paths:
+      - "frontend/**"
+      - "src/**"
+      - "pom.xml"
+      - ".github/workflows/sonarcloud.yml"
+
+jobs:
+  sonarcloud-backend:
+    name: SonarCloud Backend Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for better analysis
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Run backend tests and SonarCloud analysis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.projectKey=dsw2-practica01 \
+            -Dsonar.organization=your-org
+
+  sonarcloud-frontend:
+    name: SonarCloud Frontend Analysis
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Run frontend tests with coverage
+        run: npm test -- --watch=false --code-coverage --no-progress
+
+      - name: SonarCloud Scan Frontend
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=dsw2-practica01-frontend
+            -Dsonar.organization=your-org
+            -Dsonar.sources=src
+            -Dsonar.exclusions=**/*.spec.ts
+            -Dsonar.tests=src
+            -Dsonar.test.inclusions=**/*.spec.ts
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
