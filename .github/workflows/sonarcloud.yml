@@ -1,8 +1,5 @@
 name: 02-SonarCloud
 
-env:
-  SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
-
 on:
   pull_request:
     branches:
@@ -62,7 +59,7 @@ jobs:
           projectBaseDir: .
           args: >
             -Dsonar.projectKey=dsw2-practica01
-            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
+            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
             -Dsonar.sources=src/main/java,frontend/src
             -Dsonar.tests=src/test/java,frontend/src
             -Dsonar.test.inclusions=**/*Test.java,**/*.spec.ts,**/*.test.ts
