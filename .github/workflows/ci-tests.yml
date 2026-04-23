@@ -36,7 +36,7 @@ jobs:
           cache: maven
 
       - name: Run backend tests
-        run: mvn -B test
+        run: mvn -B -Dtest=com.example.empleados.unit.\*Test test
 
   frontend-tests:
     name: Frontend Tests

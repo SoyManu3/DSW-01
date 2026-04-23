@@ -62,6 +62,16 @@ describe('DepartamentosListPage', () => {
   });
 
   it('muestra mensaje de permisos cuando llega con denied=1', () => {
+    departamentosServiceMock.listar.mockReturnValueOnce(
+      of({
+        content: [{ id: 1, nombre: 'General', empleadosCount: 0 }],
+        page: 0,
+        size: 10,
+        totalElements: 1,
+        totalPages: 1,
+      }),
+    );
+
     const component = TestBed.createComponent(DepartamentosListPage).componentInstance;
     component.ngOnInit();
 
