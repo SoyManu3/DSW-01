@@ -1,4 +1,4 @@
-# Frontend Empleados (Angular 21)
+# Frontend Empleados ( Angular 21 )
 
 Frontend para autenticación y gestión visual de empleados, alineado con API protegida por HTTP Basic Auth.
 
