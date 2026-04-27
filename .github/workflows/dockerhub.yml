@@ -4,15 +4,14 @@ env:
   DOCKERHUB_NAMESPACE: ${{ vars.DOCKERHUB_NAMESPACE != '' && vars.DOCKERHUB_NAMESPACE || secrets.DOCKERHUB_USERNAME }}
 
 on:
-  pull_request:
-    branches:
-      - "master"
-    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_run:
+    workflows: ["02-SonarCloud"]
+    types: [completed]
 
 jobs:
   build-and-push:
     name: Build and push backend + frontend
-    if: github.event.pull_request.draft == false
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Validate DockerHub namespace
         run: |
