@@ -3,6 +3,7 @@ describe('Sesión ya autenticada', () => {
     cy.visit('/login', {
       onBeforeLoad(win) {
         win.localStorage.setItem('empleados_basic_auth_header', 'Basic ZmFrZTp0b2tlbg==');
+        win.localStorage.setItem('empleados_auth_role', 'ADMIN');
       },
     });
 

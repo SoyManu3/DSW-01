@@ -1,6 +1,6 @@
 describe('Error técnico y reintento', () => {
   it('permite reintentar después de fallo técnico', () => {
-    cy.intercept('GET', '**/api/v1/empleados?page=0', { forceNetworkError: true }).as('authFail');
+    cy.intercept('POST', '**/api/v1/auth/login', { forceNetworkError: true }).as('authFail');
 
     cy.visit('/login');
     cy.get('#emailCorporativo').type('user@empresa.com');
@@ -12,7 +12,7 @@ describe('Error técnico y reintento', () => {
       'be.visible',
     );
 
-    cy.intercept('GET', '**/api/v1/empleados?page=0', {
+    cy.intercept('POST', '**/api/v1/auth/login', {
       statusCode: 401,
       body: {},
     }).as('authRetry');
