@@ -1,0 +1,65 @@
+name: 01-DockerHub-Publish
+
+env:
+  DOCKERHUB_NAMESPACE: ${{ vars.DOCKERHUB_NAMESPACE != '' && vars.DOCKERHUB_NAMESPACE || secrets.DOCKERHUB_USERNAME }}
+
+on:
+  pull_request:
+    branches:
+      - "master"
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  build-and-push:
+    name: Build and push backend + frontend
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate DockerHub namespace
+        run: |
+          if [ -z "${DOCKERHUB_NAMESPACE}" ]; then
+            echo "Missing DOCKERHUB_NAMESPACE (configure it as Repository Variable)"
+            exit 1
+          fi
+
+      - name: Validate DockerHub credentials
+        run: |
+          if [ -z "${{ secrets.DOCKERHUB_USERNAME }}" ] || [ -z "${{ secrets.DOCKERHUB_TOKEN }}" ]; then
+            echo "Missing DOCKERHUB_USERNAME or DOCKERHUB_TOKEN secrets"
+            exit 1
+          fi
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: |
+            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-backend:pr-${{ github.event.pull_request.number }}
+            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-backend:sha-${{ github.event.pull_request.head.sha }}
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: frontend
+          file: frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-frontend:pr-${{ github.event.pull_request.number }}
+            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-frontend:sha-${{ github.event.pull_request.head.sha }}
