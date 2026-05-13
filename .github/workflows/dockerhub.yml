@@ -1,11 +1,11 @@
-name: 01-DockerHub-Publish
+name: 04-DockerHub-Publish
 
 env:
   DOCKERHUB_NAMESPACE: ${{ vars.DOCKERHUB_NAMESPACE != '' && vars.DOCKERHUB_NAMESPACE || secrets.DOCKERHUB_USERNAME }}
 
 on:
   workflow_run:
-    workflows: ["02-SonarCloud"]
+    workflows: ["03-Cypress Tests"]
     types: [completed]
 
 jobs:
