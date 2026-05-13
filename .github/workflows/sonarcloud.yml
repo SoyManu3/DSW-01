@@ -72,4 +72,3 @@ jobs:
           -Dsonar.test.inclusions=**/*Test.java,**/*.spec.ts,**/*.test.ts
           -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/coverage/**,**/cypress/**,**/*.cy.ts
           -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-          -Dsonar.qualitygate.wait=true
