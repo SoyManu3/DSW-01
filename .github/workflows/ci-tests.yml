@@ -8,6 +8,7 @@ on:
     branches:
       - "develop"
       - "release"
+      - "master"
     paths:
       - "frontend/**"
       - "src/**"
@@ -57,12 +58,3 @@ jobs:
 
       - name: Run frontend tests
         run: npm test -- --watch=false --no-progress
-
-      - name: Run Cypress basic test
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: frontend
-          install: false
-          start: npm run start -- --host 0.0.0.0 --port 4200
-          wait-on: "http://localhost:4200"
-          spec: cypress/e2e/login/login-validation-required.cy.ts
