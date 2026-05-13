@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - "develop"
+      - "master"
   pull_request:
     branches:
       - "develop"
       - "release"
+      - "master"
       - "master"
     paths:
       - "frontend/**"
