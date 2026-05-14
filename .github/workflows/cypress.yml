@@ -8,7 +8,7 @@ on:
 jobs:
   cypress-tests:
     name: Cypress E2E Tests
-    if: github.event.workflow_run.conclusion == 'success'
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
     runs-on: ubuntu-latest
 
     defaults:
