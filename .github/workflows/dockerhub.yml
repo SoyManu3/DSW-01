@@ -11,7 +11,7 @@ on:
 jobs:
   build-and-push:
     name: Build and push backend + frontend
-    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.pull_requests[0] != null
     runs-on: ubuntu-latest
 
     steps:
@@ -51,8 +51,8 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-backend:pr-${{ github.event.pull_request.number }}
-            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-backend:sha-${{ github.event.pull_request.head.sha }}
+            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-backend:pr-${{ github.event.workflow_run.pull_requests[0].number }}
+            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-backend:sha-${{ github.event.workflow_run.head_sha }}
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v6
@@ -61,5 +61,5 @@ jobs:
           file: frontend/Dockerfile
           push: true
           tags: |
-            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-frontend:pr-${{ github.event.pull_request.number }}
-            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-frontend:sha-${{ github.event.pull_request.head.sha }}
+            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-frontend:pr-${{ github.event.workflow_run.pull_requests[0].number }}
+            ${{ env.DOCKERHUB_NAMESPACE }}/empleados-frontend:sha-${{ github.event.workflow_run.head_sha }}
